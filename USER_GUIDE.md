@@ -123,12 +123,30 @@ Access fields from a single related entity (belongsTo relationship):
 
 ### Formatting
 
-Use simple markdown-style formatting:
+Use markdown-style formatting for professional-looking documents:
 
-- `# Heading` - Large heading (Level 1)
-- `## Heading` - Medium heading (Level 2)
-- `### Heading` - Small heading (Level 3)
-- `**bold text**` - Bold text
+**Headers:**
+- `# Heading` - Level 1 heading (largest)
+- `## Heading` - Level 2 heading
+- `### Heading` - Level 3 heading
+- `#### Heading` - Level 4 heading (smallest)
+
+**Text Formatting:**
+- `**bold text**` - **Bold** text
+- `*italic text*` or `_italic text_` - *Italic* text
+- `***bold and italic***` - ***Bold and italic*** text
+- `__underlined text__` - Underlined text
+- `~~strikethrough~~` - Strikethrough text
+
+**Lists:**
+- `- Item` or `* Item` - Bullet list item
+- `1. Item` - Numbered list item
+
+**Combining Formatting:**
+You can combine formatting in the same line:
+```
+This is **bold**, this is *italic*, and this is __underlined__.
+```
 
 ## Example Templates
 
@@ -297,6 +315,133 @@ Interpretation: {{rorschachInterpretation}}
 
 ## Recommendations
 {{recommendations}}
+```
+
+### Formatting Showcase Template
+
+This template demonstrates all available formatting options:
+
+```
+# Comprehensive Assessment Report
+
+## Client Information
+
+**Name:** {{name}}
+**Date of Birth:** {{dateOfBirth}}
+*Evaluated on:* {{evaluationDate}}
+
+## Executive Summary
+
+This report presents the results of a __comprehensive psychological evaluation__ conducted on {{name}}. The assessment included ***multiple standardized instruments*** and clinical observations.
+
+### Key Findings
+
+**Strengths identified:**
+- Strong verbal comprehension abilities
+- Good interpersonal skills
+- *Demonstrated resilience* in challenging situations
+
+**Areas for development:**
+1. Working memory capacity
+2. Processing speed efficiency
+3. Attention regulation
+
+## Assessment Results
+
+### Cognitive Functioning
+
+{{#ifEqual cognitiveTest "WAIS-IV"}}
+#### WAIS-IV Results
+
+The client was administered the **Wechsler Adult Intelligence Scale, Fourth Edition (WAIS-IV)**.
+
+*Index Scores:*
+- **Verbal Comprehension Index:** {{verbalScore}} - *{{verbalDescriptor}}*
+- **Perceptual Reasoning Index:** {{perceptualScore}} - *{{perceptualDescriptor}}*
+- **Working Memory Index:** {{workingMemoryScore}} - *{{workingMemoryDescriptor}}*
+- **Processing Speed Index:** {{processingSpeedScore}} - *{{processingSpeedDescriptor}}*
+
+**Full Scale IQ:** {{fullScaleIQ}}
+
+___Interpretation:___
+
+{{cognitiveInterpretation}}
+{{/ifEqual}}
+
+### Emotional Functioning
+
+The assessment revealed the following:
+
+- **Mood:** {{moodState}}
+- **Affect:** {{affectDescription}}
+- **Anxiety Level:** {{anxietyLevel}}
+
+{{#if depressionScreening}}
+*Depression screening indicated:* __{{depressionResult}}__
+{{/if}}
+
+## Clinical Observations
+
+During the evaluation, the client demonstrated:
+
+**Behavioral observations:**
+- Appropriate eye contact throughout the session
+- Clear and organized thought processes
+- ~~No signs of psychomotor agitation~~ (calm and cooperative)
+
+**Interpersonal style:**
+- Warm and engaging
+- *Appropriate boundaries*
+- Good rapport development
+
+## Diagnostic Impressions
+
+Based on the comprehensive evaluation, the following diagnostic impressions are offered:
+
+1. ***Primary Diagnosis:*** {{primaryDiagnosis}}
+2. **Rule Out:** {{ruleOutDiagnosis}}
+3. *Additional Considerations:* {{additionalConsiderations}}
+
+{{#unless formalDiagnosis}}
+__Note:__ A formal diagnosis is deferred pending additional information.
+{{/unless}}
+
+## Recommendations
+
+### Treatment Recommendations
+
+**Recommended interventions:**
+- Individual psychotherapy focusing on {{therapyFocus}}
+- *Consider* {{additionalIntervention}}
+- Group therapy if appropriate
+
+### Additional Supports
+
+1. **Educational accommodations:** {{accommodations}}
+2. **Family involvement:** {{familySupport}}
+3. **Follow-up testing:** {{followUpRecommendations}}
+
+{{#if medicationConsideration}}
+#### Medication Evaluation
+
+A psychiatric consultation for medication evaluation is recommended, specifically addressing:
+- {{medicationTarget}}
+{{/if}}
+
+## Summary
+
+In summary, {{name}} presents as ***{{summaryDescriptor}}***. The prognosis for improvement with appropriate intervention is __{{prognosis}}__.
+
+**Next steps:**
+1. Initiate recommended treatment
+2. Schedule follow-up in {{followUpTimeframe}}
+3. Monitor progress closely
+
+---
+
+*Report prepared by:* {{assignedUser.name}}
+*Date:* {{createdAt}}
+**Confidentiality Notice:** This report contains confidential information.
 ```
 
 ## Template Variables Reference

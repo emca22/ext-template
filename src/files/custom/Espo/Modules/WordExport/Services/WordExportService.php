@@ -181,46 +181,131 @@ class WordExportService implements
     }
 
     /**
-     * Add content to section with basic formatting
+     * Add content to section with formatting support
      */
     private function addContentToSection($section, string $content): void
     {
         $lines = explode("\n", $content);
 
         foreach ($lines as $line) {
+            $originalLine = $line;
             $line = trim($line);
+
             if (empty($line)) {
                 $section->addTextBreak();
                 continue;
             }
 
-            // Simple markdown-style headers
-            if (preg_match('/^#\s+(.+)$/', $line, $matches)) {
-                $section->addTitle($matches[1], 1);
-            } elseif (preg_match('/^##\s+(.+)$/', $line, $matches)) {
-                $section->addTitle($matches[1], 2);
+            // Headers
+            if (preg_match('/^####\s+(.+)$/', $line, $matches)) {
+                $section->addTitle($matches[1], 4);
             } elseif (preg_match('/^###\s+(.+)$/', $line, $matches)) {
                 $section->addTitle($matches[1], 3);
-            } else {
-                // Check for bold text **text**
-                if (preg_match_all('/\*\*([^*]+)\*\*/', $line, $matches)) {
-                    $textRun = $section->addTextRun();
-                    $lastPos = 0;
-                    foreach ($matches[0] as $i => $fullMatch) {
-                        $pos = strpos($line, $fullMatch, $lastPos);
-                        if ($pos > $lastPos) {
-                            $textRun->addText(substr($line, $lastPos, $pos - $lastPos));
-                        }
-                        $textRun->addText($matches[1][$i], ['bold' => true]);
-                        $lastPos = $pos + strlen($fullMatch);
-                    }
-                    if ($lastPos < strlen($line)) {
-                        $textRun->addText(substr($line, $lastPos));
-                    }
-                } else {
-                    $section->addText($line);
+            } elseif (preg_match('/^##\s+(.+)$/', $line, $matches)) {
+                $section->addTitle($matches[1], 2);
+            } elseif (preg_match('/^#\s+(.+)$/', $line, $matches)) {
+                $section->addTitle($matches[1], 1);
+            }
+            // Bullet lists (- or *)
+            elseif (preg_match('/^[\-\*]\s+(.+)$/', $line, $matches)) {
+                $textRun = $section->addListItemRun(0, null, 'bullet');
+                $this->addFormattedText($textRun, $matches[1]);
+            }
+            // Numbered lists
+            elseif (preg_match('/^\d+\.\s+(.+)$/', $line, $matches)) {
+                $textRun = $section->addListItemRun(0, null, 'decimal');
+                $this->addFormattedText($textRun, $matches[1]);
+            }
+            // Regular text with inline formatting
+            else {
+                $textRun = $section->addTextRun();
+                $this->addFormattedText($textRun, $line);
+            }
+        }
+    }
+
+    /**
+     * Add text with inline formatting (bold, italic, underline, strikethrough)
+     */
+    private function addFormattedText($textRun, string $text): void
+    {
+        // Pattern to match all formatting:
+        // ***text*** = bold + italic
+        // **text** = bold
+        // __text__ = underline
+        // *text* or _text_ = italic
+        // ~~text~~ = strikethrough
+
+        $patterns = [
+            // Bold + Italic (must come before bold and italic)
+            '/\*\*\*([^*]+)\*\*\*/' => ['bold' => true, 'italic' => true],
+            // Bold
+            '/\*\*([^*]+)\*\*/' => ['bold' => true],
+            // Underline
+            '/__([^_]+)__/' => ['underline' => 'single'],
+            // Italic (asterisk)
+            '/(?<!\*)\*([^*]+)\*(?!\*)/' => ['italic' => true],
+            // Italic (underscore)
+            '/(?<!_)_([^_]+)_(?!_)/' => ['italic' => true],
+            // Strikethrough
+            '/~~([^~]+)~~/' => ['strikethrough' => true],
+        ];
+
+        // Find all formatting tokens
+        $tokens = [];
+        foreach ($patterns as $pattern => $style) {
+            if (preg_match_all($pattern, $text, $matches, PREG_OFFSET_CAPTURE)) {
+                foreach ($matches[0] as $i => $match) {
+                    $tokens[] = [
+                        'start' => $match[1],
+                        'length' => strlen($match[0]),
+                        'text' => $matches[1][$i][0],
+                        'style' => $style,
+                        'pattern' => $pattern
+                    ];
                 }
             }
+        }
+
+        // Sort tokens by position
+        usort($tokens, function($a, $b) {
+            return $a['start'] - $b['start'];
+        });
+
+        // Remove overlapping tokens (keep the first one found)
+        $filteredTokens = [];
+        $lastEnd = -1;
+        foreach ($tokens as $token) {
+            if ($token['start'] >= $lastEnd) {
+                $filteredTokens[] = $token;
+                $lastEnd = $token['start'] + $token['length'];
+            }
+        }
+
+        // If no formatting found, just add plain text
+        if (empty($filteredTokens)) {
+            $textRun->addText($text);
+            return;
+        }
+
+        // Build text with formatting
+        $lastPos = 0;
+        foreach ($filteredTokens as $token) {
+            // Add plain text before this token
+            if ($token['start'] > $lastPos) {
+                $plainText = substr($text, $lastPos, $token['start'] - $lastPos);
+                $textRun->addText($plainText);
+            }
+
+            // Add formatted text
+            $textRun->addText($token['text'], $token['style']);
+
+            $lastPos = $token['start'] + $token['length'];
+        }
+
+        // Add any remaining plain text
+        if ($lastPos < strlen($text)) {
+            $textRun->addText(substr($text, $lastPos));
         }
     }
 
