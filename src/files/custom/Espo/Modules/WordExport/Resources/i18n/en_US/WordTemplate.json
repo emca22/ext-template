@@ -1,0 +1,23 @@
+{
+    "labels": {
+        "Create WordTemplate": "Create Template",
+        "Templates": "Word Templates"
+    },
+    "fields": {
+        "name": "Name",
+        "entityType": "Entity Type",
+        "description": "Description",
+        "content": "Template Content",
+        "isActive": "Is Active"
+    },
+    "tooltips": {
+        "name": "Name of the template",
+        "entityType": "The entity type this template applies to (e.g., Account, Contact)",
+        "description": "Description of what this template is used for",
+        "content": "Template content with placeholders. Use {{fieldName}} for field values, {{#if fieldName}}...{{/if}} for conditionals, and {{#each relatedList}}...{{/each}} for loops.",
+        "isActive": "Only active templates will be available for export"
+    },
+    "links": {},
+    "options": {},
+    "messages": {}
+}

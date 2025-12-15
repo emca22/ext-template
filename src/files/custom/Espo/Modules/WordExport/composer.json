@@ -1,0 +1,12 @@
+{
+    "name": "espocrm/word-export",
+    "description": "Word Export Extension for EspoCRM",
+    "require": {
+        "phpoffice/phpword": "^1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Espo\\Modules\\WordExport\\": "."
+        }
+    }
+}

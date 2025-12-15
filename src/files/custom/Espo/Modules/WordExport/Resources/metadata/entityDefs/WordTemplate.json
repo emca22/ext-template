@@ -1,0 +1,65 @@
+{
+    "fields": {
+        "name": {
+            "type": "varchar",
+            "required": true,
+            "maxLength": 255,
+            "tooltip": true
+        },
+        "entityType": {
+            "type": "enum",
+            "required": true,
+            "options": [
+                "Account"
+            ],
+            "default": "Account",
+            "tooltip": true
+        },
+        "description": {
+            "type": "text",
+            "tooltip": true
+        },
+        "content": {
+            "type": "text",
+            "tooltip": true,
+            "rows": 20
+        },
+        "isActive": {
+            "type": "bool",
+            "default": true,
+            "tooltip": true
+        },
+        "createdAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "modifiedAt": {
+            "type": "datetime",
+            "readOnly": true
+        },
+        "createdBy": {
+            "type": "link",
+            "readOnly": true,
+            "view": "views/fields/user"
+        },
+        "modifiedBy": {
+            "type": "link",
+            "readOnly": true,
+            "view": "views/fields/user"
+        }
+    },
+    "links": {
+        "createdBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        },
+        "modifiedBy": {
+            "type": "belongsTo",
+            "entity": "User"
+        }
+    },
+    "collection": {
+        "orderBy": "name",
+        "order": "asc"
+    }
+}

@@ -1,0 +1,18 @@
+[
+    {
+        "route": "/WordExport/export/:entityType/:id",
+        "method": "post",
+        "params": {
+            "controller": "WordExport",
+            "action": "export"
+        }
+    },
+    {
+        "route": "/WordExport/templates/:entityType",
+        "method": "get",
+        "params": {
+            "controller": "WordExport",
+            "action": "getTemplates"
+        }
+    }
+]

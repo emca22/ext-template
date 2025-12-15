@@ -1,9 +1,9 @@
 {
-    "module": "{@name}",
-    "name": "{@nameLabel}",
-    "description": "{@description}",
-    "author": "{@author}",
-    "bundled": {@bundled},
+    "module": "WordExport",
+    "name": "Word Export",
+    "description": "Generate Word documents from EspoCRM entities with custom templates and conditional logic",
+    "author": "Your Name",
+    "bundled": false,
     "acceptableVersions": [
         ">=9.1.0"
     ],

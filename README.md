@@ -1,6 +1,6 @@
-# Template repository for EspoCRM extensions
+# Word Export Extension for EspoCRM
 
-Create a repository for your extension from this template.
+Generate professional Word documents from your EspoCRM data with custom templates and conditional logic.
 
 ## Preparing repository
 
@@ -202,7 +202,7 @@ Run composer install for the site:
 Command to run unit tests:
 
 ```
-(npm run sync; cd site; vendor/bin/phpunit tests/unit/Espo/Modules/{@name})
+(npm run sync; cd site; vendor/bin/phpunit tests/unit/Espo/Modules/)
 ```
 
 or
@@ -238,7 +238,7 @@ return [
 Command to run integration tests:
 
 ```
-(npm run sync; cd site; vendor/bin/phpunit tests/integration/Espo/Modules/{@name})
+(npm run sync; cd site; vendor/bin/phpunit tests/integration/Espo/Modules/)
 ```
 
 or
@@ -263,7 +263,7 @@ or
 npm run sa
 ```
 
-If your extension contains additional PHP packages, you also need to add `site/custom/Espo/Modules/{@name}/vendor` to the *scanDirectories* section in *phpstan.neon* config.
+If your extension contains additional PHP packages, you also need to add `site/custom/Espo/Modules//vendor` to the *scanDirectories* section in *phpstan.neon* config.
 
 Note: You can omit *composer-install* command if your extension does not contain PHP packages.
 
@@ -275,8 +275,8 @@ You need to set the following paths to be ignored in your IDE:
 * `site/build`
 * `site/custom/`
 * `site/client/custom/`
-* `site/tests/unit/Espo/Modules/{@name}`
-* `site/tests/integration/Espo/Modules/{@name}`
+* `site/tests/unit/Espo/Modules/`
+* `site/tests/integration/Espo/Modules/`
 
 ### File watcher
 
@@ -297,13 +297,13 @@ The initialization script asks whether you want to use ES6 modules. It's recomme
 If you have chosen No and want to switch to ES6 later, then:
 
 1. Set *bundled* to true in `extension.json`.
-2. Set *bundled* and *jsTranspiled* to true in `src/files/custom/Espo/Modules/{@name}/Resources/module.json`.
-3. Add `src/files/custom/Espo/Modules/{@name}/Resources/metadata/app/client.json`
+2. Set *bundled* and *jsTranspiled* to true in `src/files/custom/Espo/Modules//Resources/module.json`.
+3. Add `src/files/custom/Espo/Modules//Resources/metadata/app/client.json`
     ```json
     {
         "scriptList": [
             "__APPEND__",
-            "client/custom/modules/{@nameHyphen}/lib/init.js"
+            "client/custom/modules//lib/init.js"
         ]
     }
     ```
@@ -322,12 +322,12 @@ In `extension.json`, add a command that will bundle the needed library into an A
 }
 ```
 
-Add the library module path to `src/files/custom/Espo/Modules/{@name}/Resources/metadata/app/jsLibs.json`
+Add the library module path to `src/files/custom/Espo/Modules//Resources/metadata/app/jsLibs.json`
 
 ```json
 {
     "some-lib": {
-        "path": "client/custom/modules/{@nameHyphen}/lib/some-lib.js"
+        "path": "client/custom/modules//lib/some-lib.js"
     }
 }
 ```

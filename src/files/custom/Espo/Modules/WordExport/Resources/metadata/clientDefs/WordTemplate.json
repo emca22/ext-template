@@ -1,0 +1,5 @@
+{
+    "controller": "controllers/record",
+    "iconClass": "fas fa-file-word",
+    "color": "#2C5F9E"
+}

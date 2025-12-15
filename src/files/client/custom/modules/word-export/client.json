@@ -1,0 +1,25 @@
+{
+    "views": {
+        "account": {
+            "detail": "word-export:views/account/detail"
+        }
+    },
+    "i18n": {
+        "en_US": {
+            "WordExport": {
+                "labels": {
+                    "Export to Word": "Export to Word",
+                    "Related Entities": "Related Entities",
+                    "Exported": "Document exported successfully"
+                },
+                "messages": {
+                    "Please select a template": "Please select a template",
+                    "Select a template to format the export": "Select a template to format the export. If no template is selected, a default format will be used.",
+                    "No templates available": "No templates are currently available for this entity type.",
+                    "A default format will be used": "A default format will be used for the export.",
+                    "Select related entities to include in the export": "Select which related entities you want to include in the export."
+                }
+            }
+        }
+    }
+}

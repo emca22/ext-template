@@ -1,0 +1,10 @@
+{
+    "detailActionList": [
+        {
+            "label": "Export to Word",
+            "name": "exportToWord",
+            "acl": "read",
+            "iconClass": "fas fa-file-word"
+        }
+    ]
+}
