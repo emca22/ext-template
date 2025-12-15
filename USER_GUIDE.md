@@ -142,6 +142,21 @@ Use markdown-style formatting for professional-looking documents:
 - `- Item` or `* Item` - Bullet list item
 - `1. Item` - Numbered list item
 
+**Tables:**
+Create tables using markdown-style syntax:
+```
+| Header 1 | Header 2 | Header 3 |
+|----------|----------|----------|
+| Row 1 Col 1 | Row 1 Col 2 | Row 1 Col 3 |
+| Row 2 Col 1 | Row 2 Col 2 | Row 2 Col 3 |
+```
+
+Features:
+- First row is automatically formatted as a header (bold, gray background)
+- The separator row (`|---|---|`) is optional but improves readability
+- Cell content supports all inline formatting (bold, italic, etc.)
+- Tables automatically adjust to fit content
+
 **Combining Formatting:**
 You can combine formatting in the same line:
 ```
@@ -442,6 +457,145 @@ In summary, {{name}} presents as ***{{summaryDescriptor}}***. The prognosis for 
 *Report prepared by:* {{assignedUser.name}}
 *Date:* {{createdAt}}
 **Confidentiality Notice:** This report contains confidential information.
+```
+
+### Tables Example Template
+
+This template demonstrates how to use tables for test scores and assessment data:
+
+```
+# Psychological Assessment Report
+
+## Client Information
+
+**Name:** {{name}}
+**Date of Birth:** {{dateOfBirth}}
+**Assessment Date:** {{assessmentDate}}
+
+## Cognitive Assessment Results
+
+### WAIS-IV Index Scores
+
+| Index | Standard Score | Percentile | Classification |
+|-------|----------------|------------|----------------|
+| Verbal Comprehension (VCI) | {{vciScore}} | {{vciPercentile}} | *{{vciClassification}}* |
+| Perceptual Reasoning (PRI) | {{priScore}} | {{priPercentile}} | *{{priClassification}}* |
+| Working Memory (WMI) | {{wmiScore}} | {{wmiPercentile}} | *{{wmiClassification}}* |
+| Processing Speed (PSI) | {{psiScore}} | {{psiPercentile}} | *{{psiClassification}}* |
+| **Full Scale IQ (FSIQ)** | **{{fsiqScore}}** | **{{fsiqPercentile}}** | ***{{fsiqClassification}}*** |
+
+**Interpretation:**
+{{cognitiveInterpretation}}
+
+### WAIS-IV Subtest Scores
+
+| Subtest | Scaled Score | Percentile |
+|---------|--------------|------------|
+| Similarities | {{similaritiesScore}} | {{similaritiesPercentile}} |
+| Vocabulary | {{vocabularyScore}} | {{vocabularyPercentile}} |
+| Information | {{informationScore}} | {{informationPercentile}} |
+| Block Design | {{blockDesignScore}} | {{blockDesignPercentile}} |
+| Matrix Reasoning | {{matrixScore}} | {{matrixPercentile}} |
+| Digit Span | {{digitSpanScore}} | {{digitSpanPercentile}} |
+| Arithmetic | {{arithmeticScore}} | {{arithmeticPercentile}} |
+| Coding | {{codingScore}} | {{codingPercentile}} |
+| Symbol Search | {{symbolSearchScore}} | {{symbolSearchPercentile}} |
+
+## Personality Assessment
+
+### MMPI-2 Clinical Scales
+
+| Scale | T-Score | Elevation | Interpretation |
+|-------|---------|-----------|----------------|
+| Hs (Hypochondriasis) | {{hsScore}} | {{hsElevation}} | {{hsInterpretation}} |
+| D (Depression) | {{dScore}} | {{dElevation}} | {{dInterpretation}} |
+| Hy (Hysteria) | {{hyScore}} | {{hyElevation}} | {{hyInterpretation}} |
+| Pd (Psychopathic Deviate) | {{pdScore}} | {{pdElevation}} | {{pdInterpretation}} |
+| Mf (Masculinity-Femininity) | {{mfScore}} | {{mfElevation}} | {{mfInterpretation}} |
+| Pa (Paranoia) | {{paScore}} | {{paElevation}} | {{paInterpretation}} |
+| Pt (Psychasthenia) | {{ptScore}} | {{ptElevation}} | {{ptInterpretation}} |
+| Sc (Schizophrenia) | {{scScore}} | {{scElevation}} | {{scInterpretation}} |
+| Ma (Hypomania) | {{maScore}} | {{maElevation}} | {{maInterpretation}} |
+| Si (Social Introversion) | {{siScore}} | {{siElevation}} | {{siInterpretation}} |
+
+**Code Type:** {{mmpiCodeType}}
+
+## Memory Assessment
+
+### WMS-IV Summary
+
+| Index | Standard Score | Percentile | Range |
+|-------|----------------|------------|-------|
+| Auditory Memory | {{auditoryMemoryScore}} | {{auditoryMemoryPercentile}} | *{{auditoryMemoryRange}}* |
+| Visual Memory | {{visualMemoryScore}} | {{visualMemoryPercentile}} | *{{visualMemoryRange}}* |
+| Immediate Memory | {{immediateMemoryScore}} | {{immediateMemoryPercentile}} | *{{immediateMemoryRange}}* |
+| Delayed Memory | {{delayedMemoryScore}} | {{delayedMemoryPercentile}} | *{{delayedMemoryRange}}* |
+
+## Symptom Comparison Table
+
+### Pre-Treatment vs. Current Assessment
+
+| Symptom Domain | Pre-Treatment | Current | Change |
+|----------------|---------------|---------|--------|
+| Depression Severity | {{preDepressionScore}} | {{currentDepressionScore}} | {{depressionChange}} |
+| Anxiety Level | {{preAnxietyScore}} | {{currentAnxietyScore}} | {{anxietyChange}} |
+| Social Functioning | {{preSocialScore}} | {{currentSocialScore}} | {{socialChange}} |
+| Occupational Functioning | {{preOccupationalScore}} | {{currentOccupationalScore}} | {{occupationalChange}} |
+
+**Trend:** {{overallTrend}}
+
+## Diagnostic Summary
+
+| Category | Finding |
+|----------|---------|
+| **Primary Diagnosis** | {{primaryDiagnosis}} |
+| **Secondary Diagnosis** | {{secondaryDiagnosis}} |
+| **Rule Out** | {{ruleOutDiagnosis}} |
+| **Severity** | {{severity}} |
+| **GAF Score** | {{gafScore}} |
+
+## Treatment Recommendations
+
+| Recommendation | Frequency | Duration | Priority |
+|----------------|-----------|----------|----------|
+| Individual Therapy | {{therapyFrequency}} | {{therapyDuration}} | **High** |
+| Medication Management | {{medFrequency}} | {{medDuration}} | *Medium* |
+| Group Therapy | {{groupFrequency}} | {{groupDuration}} | Medium |
+| Family Therapy | {{familyFrequency}} | {{familyDuration}} | Low |
+
+---
+
+**Report prepared by:** {{assignedUser.name}}
+**Date:** {{createdAt}}
+```
+
+### Dynamic Tables with Loops
+
+You can also generate tables dynamically from related entities:
+
+```
+# Assessment History
+
+## Previous Evaluations
+
+{{#each assessments}}
+### {{testName}} - {{dateAdministered}}
+
+| Measure | Score | Interpretation |
+|---------|-------|----------------|
+| Overall Score | {{overallScore}} | {{interpretation}} |
+| Subscale 1 | {{subscale1}} | {{subscale1Interp}} |
+| Subscale 2 | {{subscale2}} | {{subscale2Interp}} |
+
+{{/each}}
+
+## All Test Sessions
+
+| Date | Test | Score | Clinician |
+|------|------|-------|-----------|
+{{#each testSessions}}
+| {{date}} | {{testName}} | {{score}} | {{clinician}} |
+{{/each}}
 ```
 
 ## Template Variables Reference

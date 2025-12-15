@@ -186,13 +186,27 @@ class WordExportService implements
     private function addContentToSection($section, string $content): void
     {
         $lines = explode("\n", $content);
+        $i = 0;
+        $totalLines = count($lines);
 
-        foreach ($lines as $line) {
-            $originalLine = $line;
-            $line = trim($line);
+        while ($i < $totalLines) {
+            $line = trim($lines[$i]);
 
             if (empty($line)) {
                 $section->addTextBreak();
+                $i++;
+                continue;
+            }
+
+            // Check for table (line starts with |)
+            if (preg_match('/^\|/', $line)) {
+                $tableLines = [];
+                // Collect all consecutive table lines
+                while ($i < $totalLines && preg_match('/^\|/', trim($lines[$i]))) {
+                    $tableLines[] = trim($lines[$i]);
+                    $i++;
+                }
+                $this->addTable($section, $tableLines);
                 continue;
             }
 
@@ -221,7 +235,94 @@ class WordExportService implements
                 $textRun = $section->addTextRun();
                 $this->addFormattedText($textRun, $line);
             }
+
+            $i++;
         }
+    }
+
+    /**
+     * Add a table to the section
+     */
+    private function addTable($section, array $tableLines): void
+    {
+        if (empty($tableLines)) {
+            return;
+        }
+
+        // Parse table rows
+        $rows = [];
+        $isHeaderRow = true;
+        $skipNextRow = false;
+
+        foreach ($tableLines as $line) {
+            // Skip separator line (|---|---|)
+            if (preg_match('/^\|[\s\-:|]+\|$/', $line)) {
+                $skipNextRow = false;
+                continue;
+            }
+
+            // Parse cells
+            $cells = array_map('trim', explode('|', trim($line, '|')));
+
+            if (!empty($cells)) {
+                $rows[] = [
+                    'cells' => $cells,
+                    'isHeader' => $isHeaderRow
+                ];
+                $isHeaderRow = false;
+            }
+        }
+
+        if (empty($rows)) {
+            return;
+        }
+
+        // Determine column count
+        $colCount = max(array_map(function($row) {
+            return count($row['cells']);
+        }, $rows));
+
+        // Create table
+        $tableStyle = [
+            'borderSize' => 6,
+            'borderColor' => '999999',
+            'cellMargin' => 80
+        ];
+
+        $table = $section->addTable($tableStyle);
+
+        // Add rows
+        foreach ($rows as $rowData) {
+            $table->addRow();
+
+            $cells = $rowData['cells'];
+            $isHeader = $rowData['isHeader'];
+
+            // Pad cells if needed
+            while (count($cells) < $colCount) {
+                $cells[] = '';
+            }
+
+            foreach ($cells as $cellText) {
+                $cellStyle = ['valign' => 'center'];
+
+                if ($isHeader) {
+                    $cellStyle['bgColor'] = 'E7E6E6';
+                }
+
+                $cell = $table->addCell(2000, $cellStyle);
+
+                $textRun = $cell->addTextRun();
+
+                if ($isHeader) {
+                    $textRun->addText($cellText, ['bold' => true]);
+                } else {
+                    $this->addFormattedText($textRun, $cellText);
+                }
+            }
+        }
+
+        $section->addTextBreak();
     }
 
     /**
