@@ -1,0 +1,10 @@
+[
+    {
+        "name": "name",
+        "width": "60"
+    },
+    {
+        "name": "entityType",
+        "width": "40"
+    }
+]

@@ -1,0 +1,22 @@
+[
+    {
+        "name": "name",
+        "width": "30"
+    },
+    {
+        "name": "entityType",
+        "width": "15"
+    },
+    {
+        "name": "isActive",
+        "width": "10"
+    },
+    {
+        "name": "assignedUser",
+        "width": "15"
+    },
+    {
+        "name": "modifiedAt",
+        "width": "15"
+    }
+]
