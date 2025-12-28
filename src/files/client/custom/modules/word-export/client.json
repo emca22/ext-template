@@ -1,7 +1,14 @@
 {
+    "controllers": {
+        "WordTemplate": "word-export:controllers/word-template"
+    },
     "views": {
         "account": {
             "detail": "word-export:views/account/detail"
+        },
+        "WordTemplate": {
+            "list": "word-export:views/word-template/list",
+            "detail": "word-export:views/word-template/detail"
         }
     },
     "i18n": {
