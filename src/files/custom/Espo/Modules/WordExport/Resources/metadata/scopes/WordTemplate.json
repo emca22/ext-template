@@ -4,6 +4,6 @@
     "layouts": true,
     "tab": true,
     "acl": true,
-    "module": "WordExport",
-    "type": "Base"
+    "customizable": true,
+    "module": "WordExport"
 }
