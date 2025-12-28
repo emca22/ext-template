@@ -1,0 +1,12 @@
+{
+    "fields": {
+        "assignedUser": {
+            "read": "own",
+            "edit": "own"
+        },
+        "teams": {
+            "read": "team",
+            "edit": "own"
+        }
+    }
+}

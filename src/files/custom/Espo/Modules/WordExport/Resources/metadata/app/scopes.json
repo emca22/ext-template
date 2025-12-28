@@ -1,0 +1,10 @@
+{
+    "WordTemplate": {
+        "entity": true,
+        "object": true,
+        "tab": true,
+        "acl": true,
+        "customizable": true,
+        "module": "WordExport"
+    }
+}
