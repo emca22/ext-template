@@ -7,30 +7,68 @@ define('word-export:views/word-template/fields/content', ['views/fields/text'], 
 
         setup: function () {
             Dep.prototype.setup.call(this);
+
+            // Listen for entityType changes
+            this.listenTo(this.model, 'change:entityType', () => {
+                if (this.isRendered() && this.mode === 'edit') {
+                    this.reRender();
+                }
+            });
         },
 
         data: function () {
             let data = Dep.prototype.data.call(this);
             data.entityType = this.model.get('entityType');
+            data.hasEntityType = !!this.model.get('entityType');
             return data;
         },
 
         afterRender: function () {
             Dep.prototype.afterRender.call(this);
 
-            if (this.mode === 'edit' || this.mode === 'detail') {
+            if (this.mode === 'edit') {
                 this.setupFieldPicker();
             }
         },
 
         setupFieldPicker: function () {
-            if (this.mode !== 'edit') return;
-
             const entityType = this.model.get('entityType');
-            if (!entityType) return;
 
-            // Add insert buttons
-            this.addInsertButtons();
+            // Always add the formatting help button
+            this.addFormattingHelpButton();
+
+            // Add other buttons only if entityType is set
+            if (entityType) {
+                this.addInsertButtons();
+            } else {
+                this.addPlaceholderMessage();
+            }
+        },
+
+        addPlaceholderMessage: function () {
+            const $container = this.$el.find('.content-toolbar');
+            if (!$container.length) return;
+
+            const $message = $('<span>')
+                .addClass('text-muted')
+                .html('<i class="fas fa-info-circle"></i> Select an Entity Type to enable field insertion');
+
+            $container.append($message);
+        },
+
+        addFormattingHelpButton: function () {
+            const $container = this.$el.find('.content-toolbar');
+            if (!$container.length) return;
+
+            const $helpBtn = $('<button>')
+                .addClass('btn btn-default btn-sm')
+                .attr('type', 'button')
+                .html('<i class="fas fa-question-circle"></i> Formatting Help')
+                .on('click', () => {
+                    this.showFormattingHelp();
+                });
+
+            $container.append($helpBtn);
         },
 
         addInsertButtons: function () {
@@ -57,19 +95,15 @@ define('word-export:views/word-template/fields/content', ['views/fields/text'], 
                     this.showRelatedPicker(entityType);
                 });
 
-            // Formatting help button
-            const $helpBtn = $('<button>')
-                .addClass('btn btn-default btn-sm')
-                .attr('type', 'button')
-                .html('<i class="fas fa-question-circle"></i> Formatting Help')
-                .on('click', () => {
-                    this.showFormattingHelp();
-                });
-
-            $container.append($fieldBtn, ' ', $relatedBtn, ' ', $helpBtn);
+            $container.prepend($fieldBtn, ' ', $relatedBtn, ' ');
         },
 
         showFieldPicker: function (entityType) {
+            if (!entityType) {
+                Espo.Ui.warning('Please select an Entity Type first');
+                return;
+            }
+
             this.createView('fieldPicker', 'word-export:views/modals/field-picker', {
                 entityType: entityType,
                 scope: entityType
@@ -84,6 +118,11 @@ define('word-export:views/word-template/fields/content', ['views/fields/text'], 
         },
 
         showRelatedPicker: function (entityType) {
+            if (!entityType) {
+                Espo.Ui.warning('Please select an Entity Type first');
+                return;
+            }
+
             this.createView('relatedPicker', 'word-export:views/modals/related-picker', {
                 entityType: entityType,
                 scope: entityType
