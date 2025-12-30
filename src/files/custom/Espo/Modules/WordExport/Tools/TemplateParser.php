@@ -22,18 +22,63 @@ class TemplateParser
         $this->data = $data;
     }
 
-    public function parse(string $template): string
+    public function parse(string $template): array
     {
-        // Process conditionals first
-        $template = $this->processConditionals($template);
+        // Extract sections first
+        $sections = $this->extractSections($template);
 
-        // Process loops
-        $template = $this->processLoops($template);
+        // Process main content
+        $content = $sections['main'];
+        $content = $this->processConditionals($content);
+        $content = $this->processLoops($content);
+        $content = $this->replaceVariables($content);
 
-        // Replace variables
-        $template = $this->replaceVariables($template);
+        // Process header if exists
+        $header = '';
+        if (!empty($sections['header'])) {
+            $header = $this->processConditionals($sections['header']);
+            $header = $this->processLoops($sections['header']);
+            $header = $this->replaceVariables($header);
+        }
 
-        return $template;
+        // Process footer if exists
+        $footer = '';
+        if (!empty($sections['footer'])) {
+            $footer = $this->processConditionals($sections['footer']);
+            $footer = $this->processLoops($sections['footer']);
+            $footer = $this->replaceVariables($footer);
+        }
+
+        return [
+            'content' => $content,
+            'header' => $header,
+            'footer' => $footer
+        ];
+    }
+
+    private function extractSections(string $template): array
+    {
+        $sections = [
+            'main' => $template,
+            'header' => '',
+            'footer' => ''
+        ];
+
+        // Extract header
+        if (preg_match('/\{\{#header\}\}(.*?)\{\{\/header\}\}/s', $template, $matches)) {
+            $sections['header'] = trim($matches[1]);
+            $sections['main'] = preg_replace('/\{\{#header\}\}.*?\{\{\/header\}\}/s', '', $sections['main']);
+        }
+
+        // Extract footer
+        if (preg_match('/\{\{#footer\}\}(.*?)\{\{\/footer\}\}/s', $template, $matches)) {
+            $sections['footer'] = trim($matches[1]);
+            $sections['main'] = preg_replace('/\{\{#footer\}\}.*?\{\{\/footer\}\}/s', '', $sections['main']);
+        }
+
+        $sections['main'] = trim($sections['main']);
+
+        return $sections;
     }
 
     private function processConditionals(string $template): string

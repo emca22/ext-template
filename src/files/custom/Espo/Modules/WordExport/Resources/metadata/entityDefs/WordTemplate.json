@@ -22,7 +22,8 @@
         "content": {
             "type": "text",
             "tooltip": true,
-            "rows": 20
+            "rows": 20,
+            "view": "word-export:views/word-template/fields/content"
         },
         "isActive": {
             "type": "bool",

@@ -49,11 +49,26 @@ class WordExportService implements
         if ($template && $template->get('content')) {
             // Parse template with data
             $parser = new TemplateParser($data);
-            $parsedContent = $parser->parse($template->get('content'));
+            $parsed = $parser->parse($template->get('content'));
 
-            // Add parsed content to document
-            $section = $phpWord->addSection();
-            $this->addContentToSection($section, $parsedContent);
+            // Create section with header/footer if specified
+            $sectionStyle = [];
+            $section = $phpWord->addSection($sectionStyle);
+
+            // Add header if defined
+            if (!empty($parsed['header'])) {
+                $header = $section->addHeader();
+                $this->addContentToSection($header, $parsed['header']);
+            }
+
+            // Add footer if defined
+            if (!empty($parsed['footer'])) {
+                $footer = $section->addFooter();
+                $this->addContentToSection($footer, $parsed['footer']);
+            }
+
+            // Add main content
+            $this->addContentToSection($section, $parsed['content']);
         } else {
             // Generate default document
             $section = $phpWord->addSection();
@@ -194,6 +209,13 @@ class WordExportService implements
 
             if (empty($line)) {
                 $section->addTextBreak();
+                $i++;
+                continue;
+            }
+
+            // Check for page break
+            if (preg_match('/^\{\{pageBreak\}\}$/', $line)) {
+                $section->addPageBreak();
                 $i++;
                 continue;
             }
