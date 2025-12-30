@@ -3,7 +3,7 @@
         "WordTemplate": "word-export:controllers/word-template"
     },
     "views": {
-        "account": {
+        "Account": {
             "detail": "word-export:views/account/detail"
         },
         "WordTemplate": {
