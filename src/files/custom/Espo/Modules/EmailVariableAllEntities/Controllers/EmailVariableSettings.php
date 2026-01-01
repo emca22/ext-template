@@ -3,42 +3,25 @@
 namespace Espo\Modules\EmailVariableAllEntities\Controllers;
 
 use Espo\Core\Api\Request;
-use Espo\Core\Api\Response;
-use Espo\Core\Controllers\Base;
+use Espo\Core\Controllers\Record;
 use Espo\Core\Exceptions\BadRequest;
 use Espo\Core\Exceptions\Forbidden;
-use Espo\Core\Utils\Config;
-use Espo\Core\Utils\File\Manager as FileManager;
-use Espo\Core\Utils\Metadata;
 
-class EmailVariableSettings extends Base
+class EmailVariableSettings extends Record
 {
-    private Metadata $metadata;
-    private Config $config;
-    private FileManager $fileManager;
-
-    public function __construct(
-        Metadata $metadata,
-        Config $config,
-        FileManager $fileManager
-    ) {
-        $this->metadata = $metadata;
-        $this->config = $config;
-        $this->fileManager = $fileManager;
-    }
-
     /**
      * Get list of entities and their email variable status
      */
     public function getActionList(Request $request): array
     {
-        if (!$this->user->isAdmin()) {
+        if (!$this->getUser()->isAdmin()) {
             throw new Forbidden();
         }
 
+        $metadata = $this->getMetadata();
         $entityList = [];
-        $scopes = $this->metadata->get(['scopes']);
-        $enabledEntities = $this->metadata->get(['app', 'emailVariableEntities', 'emailVariableEnabled'], []);
+        $scopes = $metadata->get(['scopes']) ?? [];
+        $enabledEntities = $metadata->get(['app', 'emailVariableEntities', 'emailVariableEnabled'], []);
 
         foreach ($scopes as $entityType => $scopeDefs) {
             // Skip system entities and those that shouldn't have custom fields
@@ -49,7 +32,7 @@ class EmailVariableSettings extends Base
             ) {
                 $entityList[] = [
                     'name' => $entityType,
-                    'label' => $this->metadata->get(['entityDefs', $entityType, 'labels', 'scopeName']) ?? $entityType,
+                    'label' => $metadata->get(['entityDefs', $entityType, 'labels', 'scopeName']) ?? $entityType,
                     'emailVariableEnabled' => $enabledEntities[$entityType] ?? false,
                 ];
             }
@@ -70,7 +53,7 @@ class EmailVariableSettings extends Base
      */
     public function putActionUpdate(Request $request): bool
     {
-        if (!$this->user->isAdmin()) {
+        if (!$this->getUser()->isAdmin()) {
             throw new Forbidden();
         }
 
@@ -87,11 +70,12 @@ class EmailVariableSettings extends Base
 
         // Save to custom metadata
         $metadataPath = 'custom/Espo/Custom/Resources/metadata/app/emailVariableEntities.json';
-        $metadata = [
+        $metadataContent = [
             'emailVariableEnabled' => $enabledEntities,
         ];
 
-        $this->fileManager->putContentsJson($metadataPath, $metadata);
+        $fileManager = $this->getFileManager();
+        $fileManager->putContentsJson($metadataPath, $metadataContent);
 
         return true;
     }
