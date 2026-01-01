@@ -1,1 +1,18 @@
-[]
+[
+    {
+        "route": "/EmailVariableSettings",
+        "method": "get",
+        "params": {
+            "controller": "EmailVariableAllEntities:EmailVariableSettings",
+            "action": "list"
+        }
+    },
+    {
+        "route": "/EmailVariableSettings",
+        "method": "put",
+        "params": {
+            "controller": "EmailVariableAllEntities:EmailVariableSettings",
+            "action": "update"
+        }
+    }
+]

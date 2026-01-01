@@ -1,0 +1,20 @@
+{
+    "system": {
+        "itemList": [
+            {
+                "__APPEND__": true
+            },
+            {
+                "url": "#Admin/emailVariableSettings",
+                "label": "Email Variable Settings",
+                "description": "emailVariableSettingsDescription",
+                "keywords": [
+                    "email",
+                    "variable",
+                    "personName",
+                    "entities"
+                ]
+            }
+        ]
+    }
+}

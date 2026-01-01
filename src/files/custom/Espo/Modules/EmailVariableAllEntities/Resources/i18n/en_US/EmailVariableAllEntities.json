@@ -1,0 +1,9 @@
+{
+    "labels": {
+        "Email Variable Settings": "Email Variable Settings",
+        "Enable Email Variables": "Enable Email Variables"
+    },
+    "messages": {
+        "emailVariableSettingsDescription": "Select which entities should support email variable fields (personName type). After saving, you will be able to add personName fields to selected entities through Entity Manager."
+    }
+}

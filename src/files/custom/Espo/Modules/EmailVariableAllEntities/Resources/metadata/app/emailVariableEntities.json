@@ -1,0 +1,8 @@
+{
+    "emailVariableEnabled": {
+        "Account": false,
+        "Contact": true,
+        "Lead": true,
+        "User": true
+    }
+}

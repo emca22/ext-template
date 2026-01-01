@@ -17,8 +17,10 @@ class EmailVariableProvider extends Injectable
      */
     public function supportsEmailVariables(string $entityType): bool
     {
-        // Allow all entity types to support email variables
-        return true;
+        $metadata = $this->getInjection('metadata');
+        $enabledEntities = $metadata->get(['app', 'emailVariableEntities', 'emailVariableEnabled'], []);
+
+        return $enabledEntities[$entityType] ?? false;
     }
 
     /**

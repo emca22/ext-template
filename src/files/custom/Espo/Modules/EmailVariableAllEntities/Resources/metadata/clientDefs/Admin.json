@@ -1,0 +1,7 @@
+{
+    "controller": "controllers/admin",
+    "defaultAction": "index",
+    "views": {
+        "emailVariableSettings": "email-variable-all-entities:views/admin/email-variable-settings"
+    }
+}
