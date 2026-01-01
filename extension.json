@@ -1,9 +1,9 @@
 {
-    "module": "{@name}",
-    "name": "{@nameLabel}",
-    "description": "{@description}",
-    "author": "{@author}",
-    "bundled": {@bundled},
+    "module": "EmailVariableAllEntities",
+    "name": "Email Variable All Entities",
+    "description": "Allows email variable type to be used in all entity types, not just person entities.",
+    "author": "EspoCRM Extension",
+    "bundled": true,
     "acceptableVersions": [
         ">=9.1.0"
     ],

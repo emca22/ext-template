@@ -1,0 +1,7 @@
+{
+    "EmailVariable": {
+        "name": "EmailVariable",
+        "module": "EmailVariableAllEntities",
+        "hasPersonName": true
+    }
+}

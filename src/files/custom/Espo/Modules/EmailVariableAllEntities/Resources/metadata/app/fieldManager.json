@@ -1,0 +1,23 @@
+{
+    "personName": {
+        "view": "views/fields/person-name",
+        "actualFields": ["salutationName", "firstName", "lastName"],
+        "fields": {
+            "salutationName": {
+                "type": "enum"
+            },
+            "firstName": {
+                "type": "varchar",
+                "maxLength": 100
+            },
+            "lastName": {
+                "type": "varchar",
+                "maxLength": 100
+            }
+        },
+        "naming": "prefix",
+        "personalData": true,
+        "notCreatable": false,
+        "filter": true
+    }
+}

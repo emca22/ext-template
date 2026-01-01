@@ -1,11 +1,11 @@
 {
-  "name": "espocrm-ext-{@nameHyphen}",
+  "name": "espocrm-ext-email-variable-all-entities",
   "version": "0.0.1",
-  "description": "",
+  "description": "Allows email variable type to be used in all entity types, not just person entities.",
   "scripts": {
     "sa": "node build --copy && node build --composer-install && php site/vendor/bin/phpstan",
-    "unit-tests": "node build --copy && node build --composer-install && cd site && php vendor/bin/phpunit tests/unit/Espo/Modules/{ModuleName}",
-    "integration-tests": "node build --copy && node build --composer-install && cd site && php vendor/bin/phpunit tests/integration/Espo/Modules/{ModuleName}",
+    "unit-tests": "node build --copy && node build --composer-install && cd site && php vendor/bin/phpunit tests/unit/Espo/Modules/EmailVariableAllEntities",
+    "integration-tests": "node build --copy && node build --composer-install && cd site && php vendor/bin/phpunit tests/integration/Espo/Modules/EmailVariableAllEntities",
     "copy": "node build --copy",
     "composer-install": "node build --composer-install",
     "sync": "node build --copy && node build --composer-install",
@@ -16,7 +16,7 @@
     "prepare-test": "node build --prepare-test"
   },
   "type": "module",
-  "author": "{@author}",
+  "author": "EspoCRM Extension",
   "dependencies": {
     "espo-extension-tools": "github:espocrm/extension-tools#0.3.6",
     "fs-extra": "^9.0.0"
